@@ -50,3 +50,19 @@ export const walletApi = {
       '/wallet',
     ),
 }
+
+export interface Transaction {
+  id: string
+  type: string
+  category: string | null
+  amount: number
+  status: string
+  referenceId: string | null
+  description: string | null
+  walletId: string
+  createdAt: string
+}
+
+export const transactionsApi = {
+  list: () => api.get<Transaction[]>('/transactions'),
+}
