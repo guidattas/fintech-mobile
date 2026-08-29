@@ -4,13 +4,19 @@ import { View, ActivityIndicator } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { auth } from '@/lib/auth'
+import { registerForPushNotifications } from '@/lib/push'
 import { theme } from '@/lib/theme'
 
 export default function RootLayout() {
   const [ready, setReady] = useState(false)
 
   useEffect(() => {
-    auth.getToken().finally(() => setReady(true))
+    auth
+      .getToken()
+      .then((token) => {
+        if (token) registerForPushNotifications().catch(() => {})
+      })
+      .finally(() => setReady(true))
   }, [])
 
   if (!ready) {

@@ -16,6 +16,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { MovibankLogo } from '@/components/MovibankLogo'
 import { authApi } from '@/lib/api'
 import { auth } from '@/lib/auth'
+import { registerForPushNotifications } from '@/lib/push'
 import { theme } from '@/lib/theme'
 
 export default function LoginScreen() {
@@ -37,6 +38,7 @@ export default function LoginScreen() {
       }
       await auth.setToken(token)
       if (res.data.user) await auth.setUser(res.data.user)
+      registerForPushNotifications().catch(() => {})
       router.replace('/(tabs)')
     } catch (err: any) {
       const msg = err?.response?.data?.message ?? 'Erro ao autenticar'

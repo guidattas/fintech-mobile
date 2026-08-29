@@ -66,3 +66,24 @@ export interface Transaction {
 export const transactionsApi = {
   list: () => api.get<Transaction[]>('/transactions'),
 }
+
+export interface PixCharge {
+  id: string
+  provider: string
+  amount: number
+  status: string
+  qrCode: string
+  description?: string
+  message?: string
+}
+
+export const pixApi = {
+  create: (amount: number, description?: string) =>
+    api.post<PixCharge>('/pix/create', { amount, description, provider: 'auto' }),
+  simulate: (id: string) => api.post(`/pix/${id}/simulate`),
+}
+
+export const devicesApi = {
+  register: (token: string, platform: 'ios' | 'android') =>
+    api.post('/devices/register', { token, platform }),
+}
